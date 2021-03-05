@@ -1,3 +1,7 @@
 const user = require('./user');
+const weet = require('./weet');
 
-module.exports = user;
+module.exports = {
+  user,
+  weet
+};
