@@ -11,6 +11,8 @@ const {
   parameterExistsBadRequest
 } = require('./mocks/users');
 const UsersService = require('../app/services/users');
+const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
+const { BAD_CREDENTIALS } = require('../config/constants');
 
 describe('Users', () => {
   beforeEach(() => {
@@ -72,6 +74,54 @@ describe('Users', () => {
         .expect(400)
         .then(res => {
           expect(res.body.message).toContainEqual(parameterExistsBadRequest(parameterName));
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  describe('POST /users/session', () => {
+    test('token should be returned', async done => {
+      const getUserByEmailSpy = jest.spyOn(UsersService, 'getUserByEmail');
+      getUserByEmailSpy.mockImplementation(getUserByEmailMock);
+      await request(app)
+        .post('/users/sessions')
+        .send(signInInput)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body.data.token).toBeTruthy();
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    test('bad request should be returned when password does not match', async done => {
+      const getUserByEmailSpy = jest.spyOn(UsersService, 'getUserByEmail');
+      getUserByEmailSpy.mockImplementation(getUserByEmailMock);
+      signInInput.password = 'abc12345';
+      await request(app)
+        .post('/users/sessions')
+        .send(signInInput)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .then(res => {
+          expect(res.body.message).toBe(BAD_CREDENTIALS);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    test('bad request should be returned when user does not exist', async done => {
+      const getUserByEmailSpy = jest.spyOn(UsersService, 'getUserByEmail');
+      getUserByEmailSpy.mockImplementation(getNullUserByEmailMock);
+      await request(app)
+        .post('/users/sessions')
+        .send(signInInput)
+        .expect('Content-Type', /json/)
+        .expect(400)
+        .then(res => {
+          expect(res.body.message).toBe(BAD_CREDENTIALS);
           done();
         })
         .catch(err => done(err));

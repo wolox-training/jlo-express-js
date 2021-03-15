@@ -27,6 +27,7 @@ const signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserServices.getUserByEmail(email);
+    if (!user) return next(errors.badRequest(BAD_CREDENTIALS));
     const isValid = await validateWithHash(password, user.password);
     if (isValid) {
       const { id, name, lastName } = user;
