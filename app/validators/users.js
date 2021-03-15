@@ -45,3 +45,24 @@ exports.createUserValidator = [
     .matches(passwordRegex)
     .withMessage(validationMessage('password', VALIDATE_PASSWORD_MATCHES))
 ];
+
+exports.signIn = [
+  check('email')
+    .exists()
+    .withMessage(validationMessage('email', VALIDATE_EXISTS))
+    .isString()
+    .withMessage(validationMessage('email', VALIDATE_IS_STRING))
+    .notEmpty()
+    .withMessage(validationMessage('email', VALIDATE_NOT_EMPTY))
+    .matches(emailRegex)
+    .withMessage(validationMessage('email', VALIDATE_EMAIL_MATCHES)),
+  check('password')
+    .exists()
+    .withMessage(validationMessage('password', VALIDATE_EXISTS))
+    .isString()
+    .withMessage(validationMessage('password', VALIDATE_IS_STRING))
+    .notEmpty()
+    .withMessage(validationMessage('password', VALIDATE_NOT_EMPTY))
+    .matches(passwordRegex)
+    .withMessage(validationMessage('password', VALIDATE_PASSWORD_MATCHES))
+];

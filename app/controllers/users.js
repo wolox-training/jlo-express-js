@@ -1,7 +1,8 @@
 const UserServices = require('../services/users');
 const errors = require('../errors');
-const { createHash } = require('../helpers/hashing');
-const { CREATED } = require('../../config/constants');
+const { createHash, validateWithHash } = require('../helpers/hashing');
+const { CREATED, SIGN_IN_SUCCESSFUL, BAD_CREDENTIALS } = require('../../config/constants');
+const { getToken } = require('../services/sessions');
 
 const createUser = async (req, res, next) => {
   try {
@@ -22,6 +23,26 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const signIn = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    const user = await UserServices.getUserByEmail(email);
+    const isValid = await validateWithHash(password, user.password);
+    if (isValid) {
+      const { id, name, lastName } = user;
+      const token = getToken({ id, email, name, lastName });
+      return res.status(200).send({
+        data: { token },
+        message: SIGN_IN_SUCCESSFUL
+      });
+    }
+    return next(errors.badRequest(BAD_CREDENTIALS));
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
-  createUser
+  createUser,
+  signIn
 };
