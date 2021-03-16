@@ -27,7 +27,7 @@ const signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await UserServices.getUserByEmail(email);
-    if (!user) return next(errors.badRequest(BAD_CREDENTIALS));
+    if (!user) return next(errors.unauthorized(BAD_CREDENTIALS));
     const isValid = await validateWithHash(password, user.password);
     if (isValid) {
       const { id, name, lastName } = user;
@@ -37,7 +37,7 @@ const signIn = async (req, res, next) => {
         message: SIGN_IN_SUCCESSFUL
       });
     }
-    return next(errors.badRequest(BAD_CREDENTIALS));
+    return next(errors.unauthorized(BAD_CREDENTIALS));
   } catch (err) {
     return next(err);
   }
