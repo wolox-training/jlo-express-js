@@ -8,7 +8,10 @@ const {
   emailUniqueErrors,
   passwordInvalid,
   passwordBadRequest,
-  parameterExistsBadRequest
+  parameterExistsBadRequest,
+  getAllUsersMock,
+  countMock,
+  rowsMock
 } = require('./mocks/users');
 const UsersService = require('../app/services/users');
 const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
@@ -122,6 +125,23 @@ describe('Users', () => {
         .expect(400)
         .then(res => {
           expect(res.body.message).toBe(BAD_CREDENTIALS);
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  describe('GET /users', () => {
+    test('Paginated user list should be returned', async done => {
+      const getAllUsersSpy = jest.spyOn(UsersService, 'getAllUsers');
+      getAllUsersSpy.mockImplementation(getAllUsersMock);
+      await request(app)
+        .get('/users')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then(res => {
+          expect(res.body.data.users.count).toBe(countMock);
+          expect(res.body.data.users.rows).toEqual(rowsMock);
           done();
         })
         .catch(err => done(err));

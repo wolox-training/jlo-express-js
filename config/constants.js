@@ -19,3 +19,8 @@ exports.PASSWORD_SALT = 10;
 // Session messages
 exports.BAD_CREDENTIALS = 'User Credentials are not valid';
 exports.SIGN_IN_SUCCESSFUL = 'Sing in was successful';
+
+// Users
+exports.GET_USERS_OK = 'Users were successfully obtained';
+exports.PAGINATION_OFFSET = 0;
+exports.PAGINATION_LIMIT = 5;

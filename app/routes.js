@@ -7,6 +7,7 @@ const { createUserValidator, signIn } = require('./validators/users');
 exports.init = app => {
   app.get('/health', healthCheck);
   app.get('/weet', weetsController.getWeet);
+  app.get('/users', usersController.getUsers);
   app.post('/users', validateRequest(createUserValidator), usersController.createUser);
   app.post('/users/sessions', validateRequest(signIn), usersController.signIn);
 };
