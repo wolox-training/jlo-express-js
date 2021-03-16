@@ -8,6 +8,7 @@ const statusCodes = {
   [errors.DEFAULT_ERROR]: 500,
   [errors.UNPROCESSABLE_ENTITY]: 422,
   [errors.NOT_FOUND]: 404,
+  [errors.UNAUTHORIZED]: 401,
   [errors.BAD_REQUEST]: 400
 };
 

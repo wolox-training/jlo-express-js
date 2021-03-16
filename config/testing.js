@@ -5,11 +5,12 @@ exports.config = {
     database: {
       name: process.env.DB_NAME_TEST
     },
-    session: {
-      secret: 'some-super-secret'
-    },
     witter_api: {
       url: process.env.WITTER_API_URL
+    },
+    session: {
+      header_name: 'authorization',
+      secret: process.env.NODE_API_SESSION_SECRET
     }
   }
 };

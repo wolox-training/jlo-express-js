@@ -15,3 +15,7 @@ exports.CREATED = 'Created';
 
 // Hashing config
 exports.PASSWORD_SALT = 10;
+
+// Session messages
+exports.BAD_CREDENTIALS = 'User Credentials are not valid';
+exports.SIGN_IN_SUCCESSFUL = 'Sing in was successful';
