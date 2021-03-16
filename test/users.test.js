@@ -104,7 +104,7 @@ describe('Users', () => {
         .post('/users/sessions')
         .send(signInInput)
         .expect('Content-Type', /json/)
-        .expect(400)
+        .expect(401)
         .then(res => {
           expect(res.body.message).toBe(BAD_CREDENTIALS);
           done();
@@ -119,7 +119,7 @@ describe('Users', () => {
         .post('/users/sessions')
         .send(signInInput)
         .expect('Content-Type', /json/)
-        .expect(400)
+        .expect(401)
         .then(res => {
           expect(res.body.message).toBe(BAD_CREDENTIALS);
           done();
