@@ -2,15 +2,17 @@ const { verifyToken } = require('../services/sessions');
 const errors = require('../errors');
 const { INVALID_TOKEN } = require('../../config/constants');
 
+const getBearerToken = authHeader =>
+  authHeader.startsWith('Bearer ') ? authHeader.substring(7, authHeader.length) : null;
+
 exports.authenticateSession = async (req, res, next) => {
   try {
-    const bearerHeader = req.headers && req.headers.authorization;
-    if (bearerHeader) {
-      const token = bearerHeader.split(' ')[1];
-      const tokenMetaData = await verifyToken(token);
+    const authHeader = req.headers && req.headers.authorization;
+    const bearerToken = getBearerToken(authHeader);
+    if (bearerToken) {
+      const tokenMetaData = await verifyToken(bearerToken);
       if (tokenMetaData) {
-        // eslint-disable-next-line
-        req.tokenMetaData = tokenMetaData;
+        Object.assign(req, { tokenMetaData });
         return next();
       }
     }
