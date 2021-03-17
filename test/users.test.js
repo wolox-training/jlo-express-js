@@ -17,9 +17,12 @@ const UsersService = require('../app/services/users');
 const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
 const { BAD_CREDENTIALS } = require('../config/constants');
 
+let token = null;
+
 describe('Users', () => {
   beforeEach(() => {
     jest.resetModules();
+    signInInput.password = '12345abc';
   });
 
   describe('POST /users', () => {
@@ -37,8 +40,8 @@ describe('Users', () => {
     });
 
     test("'email' parameter should be unique", async done => {
-      const createUserSericeMock = jest.spyOn(UsersService, 'createUser');
-      createUserSericeMock.mockImplementation(user =>
+      const createUserServiceMock = jest.spyOn(UsersService, 'createUser');
+      createUserServiceMock.mockImplementation(user =>
         Promise.reject(new DBCreateError('Invalid input', emailUniqueErrors(user)))
       );
       await request(app)
@@ -132,11 +135,25 @@ describe('Users', () => {
   });
 
   describe('GET /users', () => {
+    beforeEach(async done => {
+      const getUserByEmailSpy = jest.spyOn(UsersService, 'getUserByEmail');
+      getUserByEmailSpy.mockImplementation(getUserByEmailMock);
+      await request(app)
+        .post('/users/sessions')
+        .send(signInInput)
+        .then(res => {
+          token = res && res.body && res.body.data && res.body.data.token;
+          done();
+        })
+        .catch(err => done(err));
+    });
+
     test('Paginated user list should be returned', async done => {
       const getAllUsersSpy = jest.spyOn(UsersService, 'getAllUsers');
       getAllUsersSpy.mockImplementation(getAllUsersMock);
       await request(app)
-        .get('/users')
+        .get('/users?offset=0&limit=5')
+        .set('Authorization', `Bearer ${token}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .then(res => {
