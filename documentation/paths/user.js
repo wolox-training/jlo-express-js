@@ -9,7 +9,7 @@ module.exports = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/components/schemas/UserInput'
+              $ref: '#/components/schemas/userInput'
             }
           }
         },
@@ -21,7 +21,7 @@ module.exports = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/UserCreated'
+                $ref: '#/components/schemas/userCreated'
               }
             }
           }
@@ -31,7 +31,7 @@ module.exports = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/InvalidUserParameters'
+                $ref: '#/components/schemas/invalidUserParameters'
               }
             }
           }
@@ -41,7 +41,44 @@ module.exports = {
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/InvalidUserEmail'
+                $ref: '#/components/schemas/invalidUserEmail'
+              }
+            }
+          }
+        }
+      }
+    },
+    get: {
+      tags: ['User operations'],
+      description: 'Get all users',
+      operationId: 'getAllUsers',
+      parameters: [
+        {
+          name: 'offset',
+          in: 'query',
+          schema: {
+            type: 'integer',
+            default: 0
+          },
+          required: false
+        },
+        {
+          name: 'limit',
+          in: 'query',
+          schema: {
+            type: 'integer',
+            default: 5
+          },
+          required: false
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Users successful obtained',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/getAllUsers'
               }
             }
           }

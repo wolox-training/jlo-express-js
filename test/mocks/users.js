@@ -57,6 +57,47 @@ const parameterExistsBadRequest = parameterName => ({
   location: 'body'
 });
 
+const countMock = 10;
+const rowsMock = [
+  {
+    id: 1,
+    name: 'Julián',
+    lastName: 'Lopera',
+    email: 'julian1.lopera@wolox.co'
+  },
+  {
+    id: 2,
+    name: 'Julián',
+    lastName: 'Lopera',
+    email: 'julian2.lopera@wolox.co'
+  },
+  {
+    id: 3,
+    name: 'Julián',
+    lastName: 'Lopera',
+    email: 'julian3.lopera@wolox.co'
+  },
+  {
+    id: 4,
+    name: 'Julián',
+    lastName: 'Lopera',
+    email: 'julian4.lopera@wolox.co'
+  },
+  {
+    id: 5,
+    name: 'Julián',
+    lastName: 'Lopera',
+    email: 'julian5.lopera@wolox.co'
+  }
+];
+
+// eslint-disable-next-line
+const getAllUsersMock = pagination =>
+  Promise.resolve({
+    count: countMock,
+    rows: rowsMock
+  });
+
 module.exports = {
   createUserInput,
   createUserOutput,
@@ -64,5 +105,8 @@ module.exports = {
   unproccesableEmail,
   passwordInvalid,
   passwordBadRequest,
-  parameterExistsBadRequest
+  parameterExistsBadRequest,
+  getAllUsersMock,
+  countMock,
+  rowsMock
 };

@@ -1,21 +1,7 @@
+const { GET_USERS_OK } = require('../../config/constants');
+
 module.exports = {
-  name: {
-    type: 'string',
-    example: 'Julián'
-  },
-  lastName: {
-    type: 'string',
-    example: 'Barrientos'
-  },
-  email: {
-    type: 'string',
-    example: 'julian.lopera@wolox.co'
-  },
-  password: {
-    type: 'string',
-    example: 'passwrd1'
-  },
-  UserInput: {
+  userInput: {
     type: 'object',
     properties: {
       name: {
@@ -32,7 +18,7 @@ module.exports = {
       }
     }
   },
-  UserCreated: {
+  userCreated: {
     type: 'object',
     properties: {
       data: {
@@ -50,7 +36,7 @@ module.exports = {
       }
     }
   },
-  InvalidUserParameters: {
+  invalidUserParameters: {
     type: 'object',
     properties: {
       message: {
@@ -83,7 +69,7 @@ module.exports = {
       }
     }
   },
-  InvalidUserEmail: {
+  invalidUserEmail: {
     type: 'object',
     properties: {
       message: {
@@ -93,6 +79,49 @@ module.exports = {
       internal_code: {
         type: 'string',
         example: 'unprocessable_entity'
+      }
+    }
+  },
+  getAllUsers: {
+    type: 'object',
+    properties: {
+      data: {
+        type: 'object',
+        properties: {
+          users: {
+            type: 'object',
+            properties: {
+              count: {
+                type: 'integer',
+                example: 10
+              },
+              rows: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      $ref: '#/components/schemas/id'
+                    },
+                    name: {
+                      $ref: '#/components/schemas/name'
+                    },
+                    lastName: {
+                      $ref: '#/components/schemas/lastName'
+                    },
+                    email: {
+                      $ref: '#/components/schemas/email'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      message: {
+        type: 'string',
+        example: GET_USERS_OK
       }
     }
   }

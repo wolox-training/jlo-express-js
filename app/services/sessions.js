@@ -5,6 +5,9 @@ const secret = config.common && config.common.session && config.common.session.s
 
 const getToken = meta => jwt.encode(meta, secret);
 
+const verifyToken = token => jwt.decode(token, secret);
+
 module.exports = {
-  getToken
+  getToken,
+  verifyToken
 };

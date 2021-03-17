@@ -1,7 +1,7 @@
 const UserServices = require('../services/users');
 const errors = require('../errors');
 const { createHash, validateWithHash } = require('../helpers/hashing');
-const { CREATED, SIGN_IN_SUCCESSFUL, BAD_CREDENTIALS } = require('../../config/constants');
+const { CREATED, SIGN_IN_SUCCESSFUL, BAD_CREDENTIALS, GET_USERS_OK } = require('../../config/constants');
 const { getToken } = require('../services/sessions');
 
 const createUser = async (req, res, next) => {
@@ -43,7 +43,21 @@ const signIn = async (req, res, next) => {
   }
 };
 
+const getUsers = async (req, res, next) => {
+  try {
+    const { offset, limit } = req.query;
+    const users = await UserServices.getAllUsers({ offset, limit });
+    return res.status(200).send({
+      data: { users },
+      message: GET_USERS_OK
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 module.exports = {
   createUser,
-  signIn
+  signIn,
+  getUsers
 };
