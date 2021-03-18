@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const { UNPROCESSABLE_ENTITY, BAD_REQUEST } = require('../../app/errors');
 const {
   CREATED,
@@ -91,7 +93,6 @@ const rowsMock = [
   }
 ];
 
-// eslint-disable-next-line
 const getAllUsersMock = pagination =>
   Promise.resolve({
     count: countMock,

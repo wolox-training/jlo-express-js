@@ -1,4 +1,5 @@
-// eslint-disable-next-line
+/* eslint-disable no-unused-vars */
+
 const getAdminUserByEmailMock = email =>
   Promise.resolve({
     id: 1,
@@ -9,7 +10,6 @@ const getAdminUserByEmailMock = email =>
     role: 'admin'
   });
 
-// eslint-disable-next-line
 const getRegularUserByEmailMock = email =>
   Promise.resolve({
     id: 1,
@@ -21,7 +21,6 @@ const getRegularUserByEmailMock = email =>
     save: () => true
   });
 
-// eslint-disable-next-line
 const getNullAdminUserByEmailMock = email => Promise.resolve(null);
 
 module.exports = {
