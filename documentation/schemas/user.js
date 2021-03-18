@@ -1,3 +1,4 @@
+const { BAD_REQUEST, UNPROCESSABLE_ENTITY } = require('../../app/errors');
 const { GET_USERS_OK } = require('../../config/constants');
 
 module.exports = {
@@ -36,6 +37,24 @@ module.exports = {
       }
     }
   },
+  userUpdated: {
+    type: 'object',
+    properties: {
+      data: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            example: 'Julián'
+          }
+        }
+      },
+      message: {
+        type: 'string',
+        example: 'Updated'
+      }
+    }
+  },
   invalidUserParameters: {
     type: 'object',
     properties: {
@@ -65,7 +84,7 @@ module.exports = {
       },
       internal_code: {
         type: 'string',
-        example: 'bad_request'
+        example: BAD_REQUEST
       }
     }
   },
@@ -78,7 +97,7 @@ module.exports = {
       },
       internal_code: {
         type: 'string',
-        example: 'unprocessable_entity'
+        example: UNPROCESSABLE_ENTITY
       }
     }
   },

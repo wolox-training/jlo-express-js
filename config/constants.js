@@ -12,6 +12,7 @@ exports.VALIDATE_EMAIL_MATCHES = 'is not a valid email address';
 
 // status messages
 exports.CREATED = 'Created';
+exports.UPDATED = 'Updated';
 
 // Hashing config
 exports.PASSWORD_SALT = 10;
@@ -20,6 +21,8 @@ exports.PASSWORD_SALT = 10;
 exports.BAD_CREDENTIALS = 'User Credentials are not valid';
 exports.SIGN_IN_SUCCESSFUL = 'Sing in was successful';
 exports.INVALID_TOKEN = 'Unauthorized for this request';
+exports.ADMIN_ROLE = 'admin';
+exports.REGULAR_ROLE = 'regular';
 
 // Users
 exports.GET_USERS_OK = 'Users were successfully obtained';

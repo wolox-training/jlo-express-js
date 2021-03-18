@@ -17,7 +17,7 @@ const UsersService = require('../app/services/users');
 const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
 const { BAD_CREDENTIALS } = require('../config/constants');
 
-let token = null;
+let regularToken = null;
 
 describe('Users', () => {
   beforeEach(() => {
@@ -142,7 +142,7 @@ describe('Users', () => {
         .post('/users/sessions')
         .send(signInInput)
         .then(res => {
-          token = res && res.body && res.body.data && res.body.data.token;
+          regularToken = res && res.body && res.body.data && res.body.data.token;
           done();
         })
         .catch(err => done(err));
@@ -153,7 +153,7 @@ describe('Users', () => {
       getAllUsersSpy.mockImplementation(getAllUsersMock);
       await request(app)
         .get('/users?offset=0&limit=5')
-        .set('Authorization', `Bearer ${token}`)
+        .set('Authorization', `Bearer ${regularToken}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .then(res => {

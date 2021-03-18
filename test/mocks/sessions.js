@@ -9,7 +9,8 @@ const getUserByEmailMock = email =>
     name: 'Julián',
     lastName: 'Lopera',
     password: '$2a$10$EYvF77TQ8YxOk4a.mvjH4.J7oRCjgXlAyUCjT7CE6Q5lpD4hBQeL.',
-    email
+    email,
+    role: 'regular'
   });
 
 const getNullUserByEmailMock = email => Promise.resolve(null && email);
