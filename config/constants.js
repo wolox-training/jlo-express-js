@@ -21,7 +21,6 @@ exports.PASSWORD_SALT = 10;
 exports.BAD_CREDENTIALS = 'User Credentials are not valid';
 exports.SIGN_IN_SUCCESSFUL = 'Sing in was successful';
 exports.INVALID_TOKEN = 'Unauthorized for this request';
-exports.ADMIN_ROUTE_PATTERN = /(^|[/])(admin)([?/]|$)+/;
 exports.ADMIN_ROLE = 'admin';
 exports.REGULAR_ROLE = 'regular';
 

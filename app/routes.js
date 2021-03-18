@@ -5,6 +5,7 @@ const adminController = require('./controllers/admin');
 const { healthCheck } = require('./controllers/healthCheck');
 const { createUserValidator, signIn } = require('./validators/users');
 const { authenticateSession } = require('./middlewares/sessions');
+const { verifyAdmin } = require('./middlewares/admin');
 
 exports.init = app => {
   app.get('/health', healthCheck);
@@ -14,7 +15,7 @@ exports.init = app => {
   app.post('/users/sessions', validateRequest(signIn), usersController.signIn);
   app.post(
     '/admin/users',
-    [validateRequest(createUserValidator), authenticateSession],
+    [validateRequest(createUserValidator), authenticateSession, verifyAdmin],
     adminController.createOrUpdateAdminUser
   );
 };
