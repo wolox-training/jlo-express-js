@@ -30,8 +30,8 @@ const signIn = async (req, res, next) => {
     if (!user) return next(errors.unauthorized(BAD_CREDENTIALS));
     const isValid = await validateWithHash(password, user.password);
     if (isValid) {
-      const { id, name, lastName } = user;
-      const token = getToken({ id, email, name, lastName });
+      const { id, name, lastName, role } = user;
+      const token = getToken({ id, email, name, lastName, role });
       return res.status(200).send({
         data: { token },
         message: SIGN_IN_SUCCESSFUL

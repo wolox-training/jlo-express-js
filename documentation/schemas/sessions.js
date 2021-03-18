@@ -1,4 +1,5 @@
-const { BAD_CREDENTIALS, SIGN_IN_SUCCESSFUL } = require('../../config/constants');
+const { UNAUTHORIZED, BAD_REQUEST } = require('../../app/errors');
+const { BAD_CREDENTIALS, SIGN_IN_SUCCESSFUL, INVALID_TOKEN } = require('../../config/constants');
 
 module.exports = {
   signIn: {
@@ -39,7 +40,20 @@ module.exports = {
       },
       internal_code: {
         type: 'string',
-        example: 'bad_request'
+        example: BAD_REQUEST
+      }
+    }
+  },
+  invalidToken: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        example: INVALID_TOKEN
+      },
+      internal_code: {
+        type: 'string',
+        example: UNAUTHORIZED
       }
     }
   }
