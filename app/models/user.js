@@ -1,7 +1,7 @@
 const { REGULAR_ROLE, ADMIN_ROLE } = require('../../config/constants');
 
-module.exports = (sequelize, DataTypes) =>
-  sequelize.define(
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define(
     'User',
     {
       name: {
@@ -37,3 +37,10 @@ module.exports = (sequelize, DataTypes) =>
       tableName: 'user'
     }
   );
+
+  User.associate = models => {
+    User.hasMany(models.Weet);
+  };
+
+  return User;
+};

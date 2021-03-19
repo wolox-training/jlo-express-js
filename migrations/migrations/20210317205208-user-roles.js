@@ -8,5 +8,9 @@ module.exports = {
       allowNull: false,
       defaultValue: 'regular'
     }),
-  down: queryInterface => queryInterface.removeColumn('user', 'role')
+  down: queryInterface =>
+    Promise.all([
+      queryInterface.removeColumn('user', 'enum_user_role'),
+      queryInterface.dropEnum('enum_user_role')
+    ])
 };

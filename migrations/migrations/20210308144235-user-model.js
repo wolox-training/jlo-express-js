@@ -34,5 +34,5 @@ module.exports = {
         defaultValue: Sequelize.NOW
       }
     }),
-  down: queryInterface => queryInterface.dropTable('user')
+  down: queryInterface => Promise.all([queryInterface.dropTable('user'), queryInterface.dropAllEnums()])
 };
