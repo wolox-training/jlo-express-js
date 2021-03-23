@@ -1,5 +1,5 @@
 const { BAD_REQUEST } = require('../../app/errors');
-const { WEET_GET_FOUND, WEET_CREATED } = require('../../config/constants');
+const { WEET_GET_FOUND, WEET_CREATED, GET_WEETS_OK } = require('../../config/constants');
 
 module.exports = {
   weetContent: {
@@ -69,6 +69,46 @@ module.exports = {
       internal_code: {
         type: 'string',
         example: BAD_REQUEST
+      }
+    }
+  },
+  getWeets: {
+    type: 'object',
+    properties: {
+      data: {
+        type: 'object',
+        properties: {
+          weets: {
+            type: 'object',
+            properties: {
+              count: {
+                type: 'intenger',
+                example: 1
+              },
+              rows: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      $ref: '#/components/schemas/id'
+                    },
+                    content: {
+                      $ref: '#/components/schemas/weetContent'
+                    },
+                    userId: {
+                      $ref: '#/components/schemas/id'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      message: {
+        type: 'string',
+        example: GET_WEETS_OK
       }
     }
   }

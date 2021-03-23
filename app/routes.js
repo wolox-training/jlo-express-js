@@ -11,6 +11,7 @@ const { createWeetValidator } = require('./validators/weets');
 exports.init = app => {
   app.get('/health', healthCheck);
   app.get('/weet', [authenticateSession], weetsController.getWeet);
+  app.get('/weets', [authenticateSession], weetsController.getWeets);
   app.post('/weets', [validateRequest(createWeetValidator), authenticateSession], weetsController.createWeet);
   app.get('/users', [authenticateSession], usersController.getUsers);
   app.post('/users', validateRequest(createUserValidator), usersController.createUser);

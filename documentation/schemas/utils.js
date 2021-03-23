@@ -18,5 +18,23 @@ module.exports = {
   password: {
     type: 'string',
     example: 'passwrd1'
+  },
+  offset: {
+    name: 'offset',
+    in: 'query',
+    schema: {
+      type: 'integer',
+      default: 0
+    },
+    required: false
+  },
+  limit: {
+    name: 'limit',
+    in: 'query',
+    schema: {
+      type: 'integer',
+      default: 5
+    },
+    required: false
   }
 };

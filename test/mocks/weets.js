@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-const { BAD_REQUEST } = require('../../app/errors');
 const { WEET_CREATED } = require('../../config/constants');
 
 const createWeetInput = {
@@ -28,12 +27,43 @@ const createWeetOutput = {
 
 const createWeetMock = weet => Promise.resolve(true);
 
-// const createBadWeetMock = weet => Promise.resolve(true);
+const countMock = 4;
+const rowsMock = [
+  {
+    id: 1,
+    content: createWeetInput.content,
+    userId: 1
+  },
+  {
+    id: 2,
+    content: createWeetInput.content,
+    userId: 1
+  },
+  {
+    id: 3,
+    content: createWeetInput.content,
+    userId: 1
+  },
+  {
+    id: 4,
+    content: createWeetInput.content,
+    userId: 1
+  }
+];
+
+const getAllWeetsMock = pagination =>
+  Promise.resolve({
+    count: countMock,
+    rows: rowsMock
+  });
 
 module.exports = {
   createWeetInput,
   createWeetOutput,
   createWeetMock,
   createBadWeedInput,
-  createBadWeedConstraint
+  createBadWeedConstraint,
+  getAllWeetsMock,
+  countMock,
+  rowsMock
 };

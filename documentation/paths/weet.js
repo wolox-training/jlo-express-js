@@ -66,6 +66,31 @@ module.exports = {
           }
         }
       }
+    },
+    get: {
+      tags: ['Weet operations'],
+      description: 'Allows you to obtain all user weets',
+      operationId: 'getWeets',
+      parameters: [
+        {
+          $ref: '#/components/schemas/offset'
+        },
+        {
+          $ref: '#/components/schemas/limit'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Weets were obtained',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/getWeets'
+              }
+            }
+          }
+        }
+      }
     }
   }
 };
