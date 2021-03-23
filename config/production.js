@@ -2,7 +2,7 @@ exports.config = {
   environment: 'production',
   common: {
     database: {
-      name: process.env.DB_NAME_DEV
+      name: process.env.DB_NAME
     },
     witter_api: {
       url: process.env.WITTER_API_URL
