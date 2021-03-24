@@ -33,3 +33,4 @@ exports.REGULAR_ROLE = 'regular';
 exports.GET_USERS_OK = 'Users were successfully obtained';
 exports.PAGINATION_OFFSET = 0;
 exports.PAGINATION_LIMIT = 5;
+exports.USER_POSITIONS = ['Developer', 'Lead', 'TL', 'EM', 'HEAD', 'CEO'];
