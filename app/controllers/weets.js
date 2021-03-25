@@ -1,7 +1,8 @@
 const geekJokesService = require('../services/geek_jokes');
 const errors = require('../errors');
 const logger = require('../logger');
-const { WEET_GET_FOUND, WEET_GET_NOT_FOUND } = require('../../config/constants');
+const { WEET_GET_FOUND, WEET_GET_NOT_FOUND, WEET_CREATED } = require('../../config/constants');
+const WeetsServices = require('../services/weets');
 
 const getWeet = async (req, res, next) => {
   try {
@@ -16,6 +17,25 @@ const getWeet = async (req, res, next) => {
   }
 };
 
+const createWeet = async (req, res, next) => {
+  try {
+    const { content } = req.body;
+    const { id: userId } = req.tokenMetaData;
+    await WeetsServices.createWeet({ userId, content });
+    return res.status(201).send({
+      data: { content },
+      message: WEET_CREATED
+    });
+  } catch (err) {
+    if (err.errors) {
+      const messages = err.errors.map(e => e.message);
+      return next(errors.unprocessableEntity(messages));
+    }
+    return next(err);
+  }
+};
+
 module.exports = {
-  getWeet
+  getWeet,
+  createWeet
 };
