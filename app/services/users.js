@@ -12,8 +12,11 @@ const getAllUsers = ({ offset = PAGINATION_OFFSET, limit = PAGINATION_LIMIT }) =
     attributes: ['id', 'name', 'lastName', 'email', 'role', 'position']
   });
 
+const getUserById = id => User.findOne({ where: { id } });
+
 module.exports = {
   createUser,
   getUserByEmail,
-  getAllUsers
+  getAllUsers,
+  getUserById
 };
