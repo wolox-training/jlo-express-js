@@ -4,6 +4,8 @@ const WeetsServices = require('./weets');
 const UserServices = require('./users');
 const errors = require('../errors');
 
+const getRatingById = ({ weetId, userId }) => Rating.findOne({ where: { weetId, userId } });
+
 const rateWeet = async ({ weetId, userId, score }) => {
   let transaction = {};
   try {
@@ -32,8 +34,6 @@ const rateWeet = async ({ weetId, userId, score }) => {
     throw err;
   }
 };
-
-const getRatingById = ({ weetId, userId }) => Rating.findOne({ where: { weetId, userId } });
 
 const getUserRating = userId =>
   Rating.findAll({

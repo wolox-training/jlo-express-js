@@ -6,7 +6,7 @@ exports.MIN_WEET_LENGTH = 1;
 exports.MAX_WEET_LENGTH = 140;
 exports.VALIDATE_MIN_MAX_LENGTH = `must be greater than ${this.MIN_WEET_LENGTH} and less than ${this.MAX_WEET_LENGTH} characters`;
 exports.GET_WEETS_OK = 'Weets were successfully obtained';
-exports.RESOURCE_DOES_NOT_EXIST = 'Resource does not exist'
+exports.RESOURCE_DOES_NOT_EXIST = 'Resource does not exist';
 
 // validation messages
 exports.validationMessage = (keyName, msg) => `'${keyName}' ${msg}`;
