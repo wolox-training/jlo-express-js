@@ -31,24 +31,23 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'regular'
       },
       position: {
-        type: DataTypes.ENUM,
-        values: USER_POSITIONS,
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: USER_POSITIONS[0],
-        set(rating) {
+        defaultValue: 0,
+        get() {
+          const rating = this.getDataValue('position');
           if (rating >= 50) {
-            this.setDataValue('position', USER_POSITIONS[5]);
+            return USER_POSITIONS[5];
           } else if (rating >= 30) {
-            this.setDataValue('position', USER_POSITIONS[4]);
+            return USER_POSITIONS[4];
           } else if (rating >= 20) {
-            this.setDataValue('position', USER_POSITIONS[3]);
+            return USER_POSITIONS[3];
           } else if (rating >= 10) {
-            this.setDataValue('position', USER_POSITIONS[2]);
+            return USER_POSITIONS[2];
           } else if (rating >= 5) {
-            this.setDataValue('position', USER_POSITIONS[1]);
-          } else {
-            this.setDataValue('position', USER_POSITIONS[0]);
+            return USER_POSITIONS[1];
           }
+          return USER_POSITIONS[0];
         }
       }
     },
