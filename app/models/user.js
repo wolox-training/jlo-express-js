@@ -60,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = models => {
     User.hasMany(models.Weet);
+    User.hasMany(models.Rating);
   };
 
   return User;
