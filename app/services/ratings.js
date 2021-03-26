@@ -14,33 +14,32 @@ const getRatingById = ({ weetId, userId, transaction }) =>
 
 const rateWeet = async ({ weetId, userId, score }) => {
   let transaction = {};
-  let pointToAdd = 0;
+  let statusCode = null;
   try {
-    transaction = await sequelize.transaction();
     const weet = await WeetsService.getWeetById(weetId);
     if (!weet) {
-      if (transaction.rollback) await transaction.rollback();
       throw errors.unprocessableEntity(RESOURCE_DOES_NOT_EXIST);
     }
-    let weetRating = await getRatingById({ weetId, userId, transaction });
-    if (weetRating) {
-      if (weetRating.score !== score) {
-        weetRating.score = score;
-        await weetRating.save({ transaction });
-        pointToAdd = score;
+    transaction = await sequelize.transaction();
+    let rating = await getRatingById({ weetId, userId, transaction });
+    if (rating) {
+      if (rating.score !== score) {
+        rating.score = score;
+        await rating.save({ transaction });
+        statusCode = 200;
       }
     } else {
-      weetRating = await Rating.create({ weetId, userId, score }, { transaction });
-      pointToAdd = score;
+      rating = await Rating.create({ weetId, userId, score }, { transaction });
+      statusCode = 201;
     }
-    if (pointToAdd) {
+    if (statusCode) {
       const user = await UsersService.getUserWeetPoints(weet.userId, transaction);
       const userPoints = UsersService.getUserPointsFromWeets(user.Weets);
       user.position = userPoints;
       await user.save({ transaction });
     }
     await transaction.commit();
-    return weetRating;
+    return { rating, statusCode: statusCode || 200 };
   } catch (err) {
     if (transaction.rollback) await transaction.rollback();
     throw err;

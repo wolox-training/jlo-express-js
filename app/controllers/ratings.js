@@ -6,8 +6,8 @@ const createRating = async (req, res, next) => {
     const { id: weetId } = req.params;
     const { score } = req.body;
     const { id: userId } = req.tokenMetaData;
-    const rating = await rateWeet({ weetId, userId, score });
-    return res.status(200).send({
+    const { rating, statusCode } = await rateWeet({ weetId, userId, score });
+    return res.status(statusCode).send({
       data: {
         rating
       },
