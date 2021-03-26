@@ -1,7 +1,8 @@
+const { DatabaseError } = require('sequelize/lib/errors');
 const geekJokesService = require('../services/geek_jokes');
 const errors = require('../errors');
 const logger = require('../logger');
-const { WEET_GET_FOUND, WEET_GET_NOT_FOUND, WEET_CREATED } = require('../../config/constants');
+const { WEET_GET_FOUND, WEET_GET_NOT_FOUND, WEET_CREATED, GET_WEETS_OK } = require('../../config/constants');
 const WeetsServices = require('../services/weets');
 
 const getWeet = async (req, res, next) => {
@@ -27,15 +28,32 @@ const createWeet = async (req, res, next) => {
       message: WEET_CREATED
     });
   } catch (err) {
-    if (err.errors) {
-      const messages = err.errors.map(e => e.message);
-      return next(errors.unprocessableEntity(messages));
+    if (err instanceof DatabaseError) {
+      if (err.errors) {
+        const messages = err.errors.map(e => e.message);
+        return next(errors.unprocessableEntity(messages));
+      }
+      return next(errors.unprocessableEntity(err.message));
     }
+    return next(err);
+  }
+};
+
+const getWeets = async (req, res, next) => {
+  try {
+    const { offset, limit } = req.query;
+    const weets = await WeetsServices.getAllWeets({ offset, limit });
+    return res.status(200).send({
+      data: { weets },
+      message: GET_WEETS_OK
+    });
+  } catch (err) {
     return next(err);
   }
 };
 
 module.exports = {
   getWeet,
-  createWeet
+  createWeet,
+  getWeets
 };

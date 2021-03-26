@@ -54,22 +54,10 @@ module.exports = {
       operationId: 'getAllUsers',
       parameters: [
         {
-          name: 'offset',
-          in: 'query',
-          schema: {
-            type: 'integer',
-            default: 0
-          },
-          required: false
+          $ref: '#/components/schemas/offset'
         },
         {
-          name: 'limit',
-          in: 'query',
-          schema: {
-            type: 'integer',
-            default: 5
-          },
-          required: false
+          $ref: '#/components/schemas/limit'
         }
       ],
       responses: {
