@@ -1,5 +1,5 @@
-const { CREATED } = require('../../config/constants');
-const { rateWeet } = require('../services/ratings');
+const { CREATED, UPDATED } = require('../../config/constants');
+const { rateWeet } = require('../services/transactions/ratings');
 
 const createRating = async (req, res, next) => {
   try {
@@ -8,10 +8,8 @@ const createRating = async (req, res, next) => {
     const { id: userId } = req.tokenMetaData;
     const { rating, statusCode } = await rateWeet({ weetId, userId, score });
     return res.status(statusCode).send({
-      data: {
-        rating
-      },
-      message: CREATED
+      data: { rating },
+      message: statusCode === 201 ? CREATED : UPDATED
     });
   } catch (err) {
     return next(err);

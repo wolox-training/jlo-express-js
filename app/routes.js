@@ -9,6 +9,7 @@ const { authenticateSession } = require('./middlewares/sessions');
 const { verifyAdmin } = require('./middlewares/admin');
 const { createWeetValidator } = require('./validators/weets');
 const { createRatingValidator } = require('./validators/ratings');
+const { parseIdParam } = require('./middlewares/ratings');
 
 exports.init = app => {
   app.get('/health', healthCheck);
@@ -17,7 +18,7 @@ exports.init = app => {
   app.post('/weets', [validateRequest(createWeetValidator), authenticateSession], weetsController.createWeet);
   app.post(
     '/weets/:id/ratings',
-    [validateRequest(createRatingValidator), authenticateSession],
+    [validateRequest(createRatingValidator), authenticateSession, parseIdParam],
     ratingsController.createRating
   );
   app.get('/users', [authenticateSession], usersController.getUsers);
