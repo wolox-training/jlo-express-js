@@ -5,7 +5,12 @@ const UsersService = require('./users');
 const errors = require('../errors');
 
 const getRatingById = ({ weetId, userId, transaction }) =>
-  Rating.findOne({ where: { weetId, userId }, lock: transaction.LOCK.UPDATE, transaction });
+  Rating.findOne({
+    where: { weetId, userId },
+    attributes: ['id', 'userId', 'weetId', 'score'],
+    lock: transaction.LOCK.UPDATE,
+    transaction
+  });
 
 const rateWeet = async ({ weetId, userId, score }) => {
   let transaction = {};
@@ -35,6 +40,7 @@ const rateWeet = async ({ weetId, userId, score }) => {
       await user.save({ transaction });
     }
     await transaction.commit();
+    return weetRating;
   } catch (err) {
     if (transaction.rollback) await transaction.rollback();
     throw err;

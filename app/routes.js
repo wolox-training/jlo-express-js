@@ -8,13 +8,18 @@ const { createUserValidator, signIn } = require('./validators/users');
 const { authenticateSession } = require('./middlewares/sessions');
 const { verifyAdmin } = require('./middlewares/admin');
 const { createWeetValidator } = require('./validators/weets');
+const { createRatingValidator } = require('./validators/ratings');
 
 exports.init = app => {
   app.get('/health', healthCheck);
   app.get('/weet', [authenticateSession], weetsController.getWeet);
   app.get('/weets', [authenticateSession], weetsController.getWeets);
   app.post('/weets', [validateRequest(createWeetValidator), authenticateSession], weetsController.createWeet);
-  app.post('/weets/:id/ratings', [authenticateSession], ratingsController.createRating);
+  app.post(
+    '/weets/:id/ratings',
+    [validateRequest(createRatingValidator), authenticateSession],
+    ratingsController.createRating
+  );
   app.get('/users', [authenticateSession], usersController.getUsers);
   app.post('/users', validateRequest(createUserValidator), usersController.createUser);
   app.post('/users/sessions', validateRequest(signIn), usersController.signIn);
