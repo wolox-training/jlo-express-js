@@ -13,7 +13,9 @@ const {
   countMock,
   rowsMock
 } = require('./mocks/users');
+const { sendWelcomeEmailMock, unproccesableSendEmail, sendBadWelcomeEmailMock } = require('./mocks/mailer');
 const UsersService = require('../app/services/users');
+const MailerService = require('../app/services/mailer');
 const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
 const { BAD_CREDENTIALS } = require('../config/constants');
 
@@ -27,6 +29,8 @@ describe('Users', () => {
 
   describe('POST /users', () => {
     test('User should be created successful', async done => {
+      const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
+      sendWelcomeEmailSpy.mockImplementation(sendWelcomeEmailMock);
       await request(app)
         .post('/users')
         .send(createUserInput)
@@ -34,6 +38,21 @@ describe('Users', () => {
         .expect(201)
         .then(res => {
           expect(res.body).toEqual(createUserOutput);
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    test('The unsent mail message should be returned.', async done => {
+      const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
+      sendWelcomeEmailSpy.mockImplementation(sendBadWelcomeEmailMock);
+      await request(app)
+        .post('/users')
+        .send(createUserInput)
+        .expect('Content-Type', /json/)
+        .expect(422)
+        .then(res => {
+          expect(res.body).toEqual(unproccesableSendEmail);
           done();
         })
         .catch(err => done(err));

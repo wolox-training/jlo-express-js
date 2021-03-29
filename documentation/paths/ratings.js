@@ -46,7 +46,7 @@ module.exports = {
             }
           }
         },
-        442: {
+        422: {
           description: 'email must be unique',
           content: {
             'application/json': {
