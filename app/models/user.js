@@ -1,4 +1,4 @@
-const { REGULAR_ROLE, ADMIN_ROLE } = require('../../config/constants');
+const { REGULAR_ROLE, ADMIN_ROLE, USER_POSITIONS } = require('../../config/constants');
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -29,6 +29,26 @@ module.exports = (sequelize, DataTypes) => {
         values: [REGULAR_ROLE, ADMIN_ROLE],
         allowNull: false,
         defaultValue: 'regular'
+      },
+      position: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        get() {
+          const rating = this.getDataValue('position');
+          if (rating >= 50) {
+            return USER_POSITIONS[5];
+          } else if (rating >= 30) {
+            return USER_POSITIONS[4];
+          } else if (rating >= 20) {
+            return USER_POSITIONS[3];
+          } else if (rating >= 10) {
+            return USER_POSITIONS[2];
+          } else if (rating >= 5) {
+            return USER_POSITIONS[1];
+          }
+          return USER_POSITIONS[0];
+        }
       }
     },
     {
@@ -40,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = models => {
     User.hasMany(models.Weet);
+    User.hasMany(models.Rating);
   };
 
   return User;

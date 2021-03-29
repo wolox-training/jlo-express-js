@@ -6,11 +6,14 @@ exports.MIN_WEET_LENGTH = 1;
 exports.MAX_WEET_LENGTH = 140;
 exports.VALIDATE_MIN_MAX_LENGTH = `must be greater than ${this.MIN_WEET_LENGTH} and less than ${this.MAX_WEET_LENGTH} characters`;
 exports.GET_WEETS_OK = 'Weets were successfully obtained';
+exports.RESOURCE_DOES_NOT_EXIST = 'Resource does not exist';
 
 // validation messages
 exports.validationMessage = (keyName, msg) => `'${keyName}' ${msg}`;
 exports.VALIDATE_EXISTS = 'is required';
 exports.VALIDATE_IS_STRING = 'must be a string';
+exports.VALIDATE_IS_NUMERIC = 'must be a number';
+exports.VALIDATE_SCORE_IS_IN = 'must be -1 or 1';
 exports.VALIDATE_NOT_EMPTY = 'must be a non-empty';
 exports.VALIDATE_PASSWORD_MATCHES = 'is not valid password';
 exports.VALIDATE_EMAIL_MATCHES = 'is not a valid email address';
@@ -33,3 +36,7 @@ exports.REGULAR_ROLE = 'regular';
 exports.GET_USERS_OK = 'Users were successfully obtained';
 exports.PAGINATION_OFFSET = 0;
 exports.PAGINATION_LIMIT = 5;
+exports.USER_POSITIONS = ['Developer', 'Lead', 'TL', 'EM', 'HEAD', 'CEO'];
+
+// Ratings
+exports.RATING_SCORES = [-1, 1];

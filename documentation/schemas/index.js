@@ -3,6 +3,7 @@ const user = require('./user');
 const weet = require('./weet');
 const admin = require('./admin');
 const sessions = require('./sessions');
+const ratings = require('./ratings');
 
 module.exports = {
   ...utils,
@@ -10,6 +11,7 @@ module.exports = {
   ...weet,
   ...sessions,
   ...admin,
+  ...ratings,
   Error: {
     type: 'object',
     properties: {
