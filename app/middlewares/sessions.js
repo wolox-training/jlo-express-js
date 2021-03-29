@@ -1,3 +1,4 @@
+const { moment } = require('../../config/moment');
 const { verifyToken } = require('../services/sessions');
 const errors = require('../errors');
 const { INVALID_TOKEN } = require('../../config/constants');
@@ -12,6 +13,9 @@ exports.authenticateSession = async (req, res, next) => {
     if (bearerToken) {
       const tokenMetaData = await verifyToken(bearerToken);
       if (tokenMetaData) {
+        if (tokenMetaData.exp && tokenMetaData.exp <= moment().valueOf()) {
+          return next(errors.unauthorized(INVALID_TOKEN));
+        }
         Object.assign(req, { tokenMetaData });
         return next();
       }
