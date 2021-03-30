@@ -1,15 +1,16 @@
+const fs = require('fs');
+const path = require('path');
+const handlebars = require('handlebars');
 const mailer = require('nodemailer');
 const { EMAIL_SENDER, EMAIL_GENERAL_ERROR } = require('../../config/constants');
 const logger = require('../logger');
 
-const welcomeMessage = (name, lastName, email) => ({
-  from: `<${EMAIL_SENDER}>`,
+const welcomeMessage = (name, lastName, email, html) => ({
+  from: `Weeter API <${EMAIL_SENDER}>`,
   to: email,
   subject: 'Welcome ✔',
   text: `Welcome ${name} ${lastName}`,
-  html: `<h1>Witter API</h1>
-    <p>⁄¡Welcome <b>${name} ${lastName}!</b></p>
-    `
+  html
 });
 
 const transporterConfig = () => ({
@@ -24,9 +25,12 @@ const transporterConfig = () => ({
 const sendWelcomeEmail = async ({ name, lastName, email }) => {
   try {
     const transporter = mailer.createTransport(transporterConfig(name, lastName));
-    await transporter.sendMail(welcomeMessage(name, lastName, email));
+    const fileData = await fs.promises.readFile(path.join(__dirname, '../templates/welcome.html'), 'utf8');
+    const template = handlebars.compile(fileData);
+    const html = template({ name, lastName });
+    await transporter.sendMail(welcomeMessage(name, lastName, email, html));
   } catch (err) {
-    logger.info('sendWelcomeEmail: ', err);
+    logger.info('Error sending welcome email ', err);
     throw new Error(EMAIL_GENERAL_ERROR);
   }
 };

@@ -18,7 +18,7 @@ const createUser = async (req, res, next) => {
       message: CREATED
     });
   } catch (err) {
-    logger.info('createUser: ', err);
+    logger.info('Error creating user: ', err);
     if (err.errors) {
       const messages = err.errors.map(e => e.message);
       return next(errors.unprocessableEntity(messages));
