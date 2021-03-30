@@ -31,6 +31,8 @@ exports.SIGN_IN_SUCCESSFUL = 'Sing in was successful';
 exports.INVALID_TOKEN = 'Unauthorized for this request';
 exports.ADMIN_ROLE = 'admin';
 exports.REGULAR_ROLE = 'regular';
+exports.JWT_EXPIRATION_TIME = 3;
+exports.TIME_ZONE = 'America/Bogota';
 
 // Users
 exports.GET_USERS_OK = 'Users were successfully obtained';
