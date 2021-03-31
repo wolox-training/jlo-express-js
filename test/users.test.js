@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-params */
+
+const { CronJob } = require('cron');
 const request = require('supertest');
 const app = require('../app');
 const { DBCreateError } = require('./mocks/errors');
@@ -11,34 +15,34 @@ const {
   parameterExistsBadRequest,
   getAllUsersMock,
   countMock,
-  rowsMock
+  rowsMock,
+  createUserMock
 } = require('./mocks/users');
-const {
-  sendWelcomeEmailMock,
-  unproccesableSendEmail,
-  sendBadWelcomeEmailMock,
-  startCongratsMailJobMock,
-  startBadCongratsMailJobMock
-} = require('./mocks/mailer');
-const UsersService = require('../app/services/users');
+const { sendWelcomeEmailMock, sendBadWelcomeEmailMock, unproccesableSendEmail } = require('./mocks/mailer');
 const MailerService = require('../app/services/mailer');
+const UsersService = require('../app/services/users');
 const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
-const { BAD_CREDENTIALS } = require('../config/constants');
+const { BAD_CREDENTIALS, TIME_ZONE, CRON_TIME } = require('../config/constants');
 
 let regularToken = null;
+
+jest.mock('cron', () => ({
+  CronJob: jest.fn().mockImplementation((cronTime, onTick, onComplete, start, timeZone) => ({
+    start: () => true
+  }))
+}));
 
 describe('Users', () => {
   beforeEach(() => {
     jest.resetModules();
     signInInput.password = '12345abc';
+    CronJob.mockClear();
   });
 
   describe('POST /users', () => {
     test('User should be created successful', async done => {
       const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
       sendWelcomeEmailSpy.mockImplementation(sendWelcomeEmailMock);
-      const startCongratsMailJobSpy = jest.spyOn(MailerService, 'startCongratulationsMailJob');
-      startCongratsMailJobSpy.mockImplementation(startCongratsMailJobMock);
       await request(app)
         .post('/users')
         .send(createUserInput)
@@ -54,8 +58,6 @@ describe('Users', () => {
     test('The unsent mail message should be returned.', async done => {
       const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
       sendWelcomeEmailSpy.mockImplementation(sendBadWelcomeEmailMock);
-      const startCongratsMailJobSpy = jest.spyOn(MailerService, 'startCongratulationsMailJob');
-      startCongratsMailJobSpy.mockImplementation(startBadCongratsMailJobMock);
       await request(app)
         .post('/users')
         .send(createUserInput)
@@ -86,10 +88,11 @@ describe('Users', () => {
     });
 
     test("'password' parameter is not valid", async done => {
-      createUserInput.password = passwordInvalid;
+      const reqBody = { ...createUserInput };
+      reqBody.password = passwordInvalid;
       await request(app)
         .post('/users')
-        .send(createUserInput)
+        .send(reqBody)
         .expect('Content-Type', /json/)
         .expect(400)
         .then(res => {
@@ -100,15 +103,35 @@ describe('Users', () => {
     });
 
     test('Required parameters should be generate a bad_request response', async done => {
+      const reqBody = { ...createUserInput };
       const parameterName = 'name';
-      delete createUserInput[parameterName];
+      delete reqBody[parameterName];
       await request(app)
         .post('/users')
-        .send(createUserInput)
+        .send(reqBody)
         .expect('Content-Type', /json/)
         .expect(400)
         .then(res => {
           expect(res.body.message).toContainEqual(parameterExistsBadRequest(parameterName));
+          done();
+        })
+        .catch(err => done(err));
+    });
+
+    test('Mail job should be properly called', async done => {
+      jest.resetModules();
+      const createUserSpy = jest.spyOn(UsersService, 'createUser');
+      createUserSpy.mockImplementation(createUserMock);
+      const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
+      sendWelcomeEmailSpy.mockImplementation(sendWelcomeEmailMock);
+      await request(app)
+        .post('/users')
+        .send(createUserInput)
+        .expect('Content-Type', /json/)
+        .expect(201)
+        .then(res => {
+          expect(CronJob).toBeCalledWith(CRON_TIME, expect.any(Function), null, true, TIME_ZONE);
+          expect(res.body).toEqual(createUserOutput);
           done();
         })
         .catch(err => done(err));

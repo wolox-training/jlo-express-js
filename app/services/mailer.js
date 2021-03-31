@@ -7,7 +7,8 @@ const {
   EMAIL_SENDER,
   EMAIL_GENERAL_ERROR,
   TIME_ZONE,
-  EMAIL_TRANSPORTER_CONFIG
+  EMAIL_TRANSPORTER_CONFIG,
+  CRON_TIME
 } = require('../../config/constants');
 const logger = require('../logger');
 
@@ -27,7 +28,7 @@ const congratulationMessage = (name, lastName, email, html) => ({
   html
 });
 
-const congratulationsEmailJ = async ({ name, lastName, email }, transporter, html) => {
+const sendCongratulationsEmail = async ({ name, lastName, email }, transporter, html) => {
   try {
     const messageInfo = await transporter.sendMail(congratulationMessage(name, lastName, email, html));
     logger.info('Congrats message info: ', messageInfo);
@@ -60,8 +61,8 @@ const startCongratulationsMailJob = async ({ name, lastName, email }) => {
     const congratulationsTemplate = handlebars.compile(congratulationsFile);
     const congratulationsHTML = congratulationsTemplate({ name, lastName });
     const job = new CronJob(
-      '00 00 00 * * *',
-      () => congratulationsEmailJ({ name, lastName, email }, transporter, congratulationsHTML),
+      CRON_TIME,
+      () => sendCongratulationsEmail({ name, lastName, email }, transporter, congratulationsHTML),
       null,
       true,
       TIME_ZONE
@@ -75,5 +76,6 @@ const startCongratulationsMailJob = async ({ name, lastName, email }) => {
 
 module.exports = {
   sendWelcomeEmail,
+  sendCongratulationsEmail,
   startCongratulationsMailJob
 };

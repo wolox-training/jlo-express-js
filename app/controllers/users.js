@@ -1,9 +1,9 @@
-const UserServices = require('../services/users');
 const errors = require('../errors');
 const { createHash, validateWithHash } = require('../helpers/hashing');
 const { CREATED, SIGN_IN_SUCCESSFUL, BAD_CREDENTIALS, GET_USERS_OK } = require('../../config/constants');
 const { getToken } = require('../services/sessions');
 const MailerService = require('../services/mailer');
+const UserServices = require('../services/users');
 const logger = require('../logger');
 
 const createUser = async (req, res, next) => {

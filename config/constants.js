@@ -33,6 +33,7 @@ exports.ADMIN_ROLE = 'admin';
 exports.REGULAR_ROLE = 'regular';
 exports.JWT_EXPIRATION_TIME = 3;
 exports.TIME_ZONE = 'America/Bogota';
+exports.CRON_TIME = '00 00 00 * * *';
 
 // Users
 exports.GET_USERS_OK = 'Users were successfully obtained';
