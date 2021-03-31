@@ -29,7 +29,8 @@ const congratulationMessage = (name, lastName, email, html) => ({
 
 const congratulationsEmailJ = async ({ name, lastName, email }, transporter, html) => {
   try {
-    await transporter.sendMail(congratulationMessage(name, lastName, email, html));
+    const messageInfo = await transporter.sendMail(congratulationMessage(name, lastName, email, html));
+    logger.info('Congrats message info: ', messageInfo);
   } catch (err) {
     logger.info('Error sending congratularions email', err);
   }
@@ -41,7 +42,8 @@ const sendWelcomeEmail = async ({ name, lastName, email }) => {
     const welcomeFile = await fs.promises.readFile(path.join(__dirname, '../templates/welcome.html'), 'utf8');
     const welcomeTemplate = handlebars.compile(welcomeFile);
     const welcomeHTML = welcomeTemplate({ name, lastName });
-    await transporter.sendMail(welcomeMessage(name, lastName, email, welcomeHTML));
+    const messageInfo = await transporter.sendMail(welcomeMessage(name, lastName, email, welcomeHTML));
+    logger.info('Welcome message info: ', messageInfo);
   } catch (err) {
     logger.info('Error sending welcome email ', err);
     throw new Error(EMAIL_GENERAL_ERROR);
