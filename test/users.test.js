@@ -13,7 +13,13 @@ const {
   countMock,
   rowsMock
 } = require('./mocks/users');
-const { sendWelcomeEmailMock, unproccesableSendEmail, sendBadWelcomeEmailMock } = require('./mocks/mailer');
+const {
+  sendWelcomeEmailMock,
+  unproccesableSendEmail,
+  sendBadWelcomeEmailMock,
+  startCongratsMailJobMock,
+  startBadCongratsMailJobMock
+} = require('./mocks/mailer');
 const UsersService = require('../app/services/users');
 const MailerService = require('../app/services/mailer');
 const { signInInput, getUserByEmailMock, getNullUserByEmailMock } = require('./mocks/sessions');
@@ -31,6 +37,8 @@ describe('Users', () => {
     test('User should be created successful', async done => {
       const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
       sendWelcomeEmailSpy.mockImplementation(sendWelcomeEmailMock);
+      const startCongratsMailJobSpy = jest.spyOn(MailerService, 'startCongratulationsMailJob');
+      startCongratsMailJobSpy.mockImplementation(startCongratsMailJobMock);
       await request(app)
         .post('/users')
         .send(createUserInput)
@@ -46,6 +54,8 @@ describe('Users', () => {
     test('The unsent mail message should be returned.', async done => {
       const sendWelcomeEmailSpy = jest.spyOn(MailerService, 'sendWelcomeEmail');
       sendWelcomeEmailSpy.mockImplementation(sendBadWelcomeEmailMock);
+      const startCongratsMailJobSpy = jest.spyOn(MailerService, 'startCongratulationsMailJob');
+      startCongratsMailJobSpy.mockImplementation(startBadCongratsMailJobMock);
       await request(app)
         .post('/users')
         .send(createUserInput)

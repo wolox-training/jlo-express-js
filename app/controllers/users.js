@@ -13,12 +13,13 @@ const createUser = async (req, res, next) => {
     if (hashCode) userData.password = hashCode;
     await UserServices.createUser(userData);
     await MailerService.sendWelcomeEmail(userData);
+    await MailerService.startCongratulationsMailJob(userData);
     return res.status(201).send({
       data: { name: userData.name },
       message: CREATED
     });
   } catch (err) {
-    logger.info('createUser: ', err);
+    logger.info('Error creating user: ', err);
     if (err.errors) {
       const messages = err.errors.map(e => e.message);
       return next(errors.unprocessableEntity(messages));
