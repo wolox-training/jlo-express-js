@@ -26,7 +26,7 @@ module.exports = {
       description: 'Local server'
     },
     {
-      url: 'https://api_url_testing',
+      url: `https://${process.env.API_URL}/`,
       description: 'Testing server'
     }
   ],

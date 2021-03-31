@@ -42,3 +42,7 @@ exports.USER_POSITIONS = ['Developer', 'Lead', 'TL', 'EM', 'HEAD', 'CEO'];
 
 // Ratings
 exports.RATING_SCORES = [-1, 1];
+
+// Mailer
+exports.EMAIL_SENDER = 'julian.lopera@wolox.co';
+exports.EMAIL_GENERAL_ERROR = 'Welcome email could not be sent';

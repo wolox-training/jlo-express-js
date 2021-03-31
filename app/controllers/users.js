@@ -3,6 +3,8 @@ const errors = require('../errors');
 const { createHash, validateWithHash } = require('../helpers/hashing');
 const { CREATED, SIGN_IN_SUCCESSFUL, BAD_CREDENTIALS, GET_USERS_OK } = require('../../config/constants');
 const { getToken } = require('../services/sessions');
+const MailerService = require('../services/mailer');
+const logger = require('../logger');
 
 const createUser = async (req, res, next) => {
   try {
@@ -10,11 +12,13 @@ const createUser = async (req, res, next) => {
     const hashCode = await createHash(userData.password);
     if (hashCode) userData.password = hashCode;
     await UserServices.createUser(userData);
+    await MailerService.sendWelcomeEmail(userData);
     return res.status(201).send({
       data: { name: userData.name },
       message: CREATED
     });
   } catch (err) {
+    logger.info('Error creating user: ', err);
     if (err.errors) {
       const messages = err.errors.map(e => e.message);
       return next(errors.unprocessableEntity(messages));
