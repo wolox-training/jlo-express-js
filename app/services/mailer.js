@@ -4,7 +4,6 @@ const path = require('path');
 const handlebars = require('handlebars');
 const mailer = require('nodemailer');
 const {
-  EMAIL_SENDER,
   EMAIL_GENERAL_ERROR,
   TIME_ZONE,
   EMAIL_TRANSPORTER_CONFIG,
@@ -13,7 +12,7 @@ const {
 const logger = require('../logger');
 
 const welcomeMessage = (name, lastName, email, html) => ({
-  from: `Weeter API <${EMAIL_SENDER}>`,
+  from: `Weeter API <${process.env.EMAIL_SENDER}>`,
   to: email,
   subject: 'Welcome ✔',
   text: `Welcome ${name} ${lastName}`,
@@ -21,7 +20,7 @@ const welcomeMessage = (name, lastName, email, html) => ({
 });
 
 const congratulationMessage = (name, lastName, email, html) => ({
-  from: `Weeter API <${EMAIL_SENDER}>`,
+  from: `Weeter API <${process.env.EMAIL_SENDER}>`,
   to: email,
   subject: 'Congratulations 🎉',
   text: `Congratulations ${name} ${lastName}`,
