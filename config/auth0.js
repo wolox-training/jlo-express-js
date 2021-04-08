@@ -1,12 +1,27 @@
 const { auth } = require('express-openid-connect');
+const config = require('./index');
 
-const config = {
+const configParams = {
   authRequired: false,
   auth0Logout: true,
-  secret: 'a long, randomly-generated string stored in env',
-  baseURL: process.env.BASE_URL || `https://localhost:${process.env.PORT}`,
-  clientID: 'tj46FnmL19wYzZovONham9xtKFyZuHc0',
-  issuerBaseURL: 'https://dev-fmtgdiik.us.auth0.com'
+  routes: {
+    login: 'users/login',
+    logout: 'users/logout'
+  },
+  authorizationParams: {
+    response_type: 'code',
+    scope: 'openid profile email'
+  }
 };
 
-exports.init = app => app.use(auth(config));
+const port = config.common.api.port || 8080;
+if (
+  !configParams.baseURL &&
+  !process.env.BASE_URL &&
+  process.env.PORT &&
+  process.env.NODE_ENV !== 'production'
+) {
+  configParams.baseURL = `http://localhost:${port}`;
+}
+
+exports.init = app => app.use(auth(configParams));
