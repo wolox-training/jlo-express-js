@@ -21,6 +21,7 @@ exports.VALIDATE_EMAIL_MATCHES = 'is not a valid email address';
 // status messages
 exports.CREATED = 'Created';
 exports.UPDATED = 'Updated';
+exports.GENERATED = 'Generated';
 
 // Hashing config
 exports.PASSWORD_SALT = 10;
