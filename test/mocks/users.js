@@ -99,6 +99,8 @@ const getAllUsersMock = pagination =>
     rows: rowsMock
   });
 
+const createUserMock = user => Promise.resolve(true);
+
 module.exports = {
   createUserInput,
   createUserOutput,
@@ -109,5 +111,6 @@ module.exports = {
   parameterExistsBadRequest,
   getAllUsersMock,
   countMock,
-  rowsMock
+  rowsMock,
+  createUserMock
 };

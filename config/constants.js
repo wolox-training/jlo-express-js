@@ -33,6 +33,7 @@ exports.ADMIN_ROLE = 'admin';
 exports.REGULAR_ROLE = 'regular';
 exports.JWT_EXPIRATION_TIME = 3;
 exports.TIME_ZONE = 'America/Bogota';
+exports.CRON_TIME = '00 00 00 * * *';
 
 // Users
 exports.GET_USERS_OK = 'Users were successfully obtained';
@@ -44,5 +45,12 @@ exports.USER_POSITIONS = ['Developer', 'Lead', 'TL', 'EM', 'HEAD', 'CEO'];
 exports.RATING_SCORES = [-1, 1];
 
 // Mailer
-exports.EMAIL_SENDER = 'julian.lopera@wolox.co';
-exports.EMAIL_GENERAL_ERROR = 'Welcome email could not be sent';
+exports.EMAIL_GENERAL_ERROR = 'Email could not be sent';
+exports.EMAIL_TRANSPORTER_CONFIG = {
+  service: 'gmail',
+  secure: true,
+  auth: {
+    user: process.env.MAILER_USER,
+    pass: process.env.MAILER_PASSWORD
+  }
+};
